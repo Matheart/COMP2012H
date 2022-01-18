@@ -1,0 +1,28 @@
+I tests/definitions.inc
+
+> init
+<<<
+
+E .gitlite
+
+> log
+===
+${COMMIT_HEAD}
+
+initial commit
+
+<<<
+
+> status
+=== Branches ===
+\*master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+${ARBLINES}
+<<<

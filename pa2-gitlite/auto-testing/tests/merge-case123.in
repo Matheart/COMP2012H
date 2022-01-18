@@ -1,0 +1,177 @@
+I tests/definitions.inc
+
+> init
+<<<
+
++ v1.txt v1.txt
++ v2.txt v2.txt
++ v3.txt v3.txt
++ v4.txt v4.txt
++ v5.txt v5.txt
++ v6.txt v6.txt
+
+> add v1.txt
+<<<
+
+> add v2.txt
+<<<
+
+> add v3.txt
+<<<
+
+> add v4.txt
+<<<
+
+> add v5.txt
+<<<
+
+> commit split_point
+<<<
+
+> branch new
+<<<
+
++ v2.txt v3.txt
+
+> add v2.txt
+<<<
+
++ v3.txt v6.txt
+
+> add v3.txt
+<<<
+
+> rm v4.txt
+<<<
+
+> rm v5.txt
+<<<
+
+> commit master_c1
+<<<
+
+* v4.txt
+* v5.txt
+
+> checkout new
+<<<
+
+= v1.txt v1.txt
+= v2.txt v2.txt
+= v3.txt v3.txt
+= v4.txt v4.txt
+= v5.txt v5.txt
+
++ v1.txt v2.txt
+
+> add v1.txt
+<<<
+
++ v3.txt v6.txt
+
+> add v3.txt
+<<<
+
+> rm v4.txt
+<<<
+
+> rm v5.txt
+<<<
+
+* v4.txt
+* v5.txt
+
+> commit new_c1
+<<<
+
+> log
+===
+${COMMIT_HEAD}
+
+new_c1
+
+===
+${COMMIT_HEAD}
+
+split_point
+
+===
+${COMMIT_HEAD}
+
+initial commit
+
+<<<
+
+> status
+=== Branches ===
+master
+\*new
+  
+=== Staged Files ===
+  
+=== Removed Files ===
+  
+=== Modifications Not Staged For Commit ===
+  
+=== Untracked Files ===
+v6.txt
+<<<
+
+> checkout master
+<<<
+
+= v1.txt v1.txt
+= v2.txt v3.txt
+= v3.txt v6.txt
+* v4.txt
+* v5.txt
+
++ v5.txt v5.txt
+
+> merge new
+<<<
+
+= v1.txt v2.txt
+= v2.txt v3.txt
+= v3.txt v6.txt
+* v4.txt
+= v5.txt v5.txt
+
+> status
+=== Branches ===
+\*master
+new
+  
+=== Staged Files ===
+  
+=== Removed Files ===
+  
+=== Modifications Not Staged For Commit ===
+  
+=== Untracked Files ===
+v5.txt
+v6.txt
+<<<
+
+> log
+===
+${COMMIT_HEAD}
+
+Merged new into master.
+
+===
+${COMMIT_HEAD}
+
+master_c1
+
+===
+${COMMIT_HEAD}
+
+split_point
+
+===
+${COMMIT_HEAD}
+
+initial commit
+
+<<<

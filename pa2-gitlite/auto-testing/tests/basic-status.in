@@ -1,0 +1,51 @@
+I tests/definitions.inc
+
+> init
+<<<
+
++ text1.txt text1.txt
++ text2.txt text2.txt
++ akari.c akari.c
+
+> add text1.txt
+<<<
+
+> add akari.c
+<<<
+
+> status
+=== Branches ===
+\*master
+  
+=== Staged Files ===
+akari.c
+text1.txt
+
+=== Removed Files ===
+  
+=== Modifications Not Staged For Commit ===
+  
+=== Untracked Files ===
+${ARBLINES}
+<<<
+
+> commit aaakkaariiiii
+<<<
+
+> rm akari.c
+<<<
+
+> status
+=== Branches ===
+\*master
+  
+=== Staged Files ===
+
+=== Removed Files ===
+akari.c
+  
+=== Modifications Not Staged For Commit ===
+  
+=== Untracked Files ===
+${ARBLINES}
+<<<

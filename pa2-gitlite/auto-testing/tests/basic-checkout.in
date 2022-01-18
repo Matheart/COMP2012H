@@ -1,0 +1,62 @@
+I tests/definitions.inc
+
+> init
+<<<
+
++ text1.txt text1.txt
+
+> add text1.txt
+<<<
+
+> commit "version 1"
+<<<
+
++ text1.txt text2.txt
+
+> add text1.txt
+<<<
+
+> commit "version 2"
+<<<
+
+> rm text1.txt
+<<<
+
+> commit gone
+<<<
+
+> log
+===
+${COMMIT_HEAD}
+
+gone
+
+===
+${COMMIT_HEAD}
+
+version 2
+
+===
+${COMMIT_HEAD}
+
+version 1
+
+===
+${COMMIT_HEAD}
+
+initial commit
+
+<<<
+
+D c1 "${3}"
+D c2 "${2}"
+
+> checkout ${c1} -- text1.txt
+<<<
+
+= text1.txt text1.txt
+
+> checkout ${c2} -- text1.txt
+<<<
+
+= text1.txt text2.txt

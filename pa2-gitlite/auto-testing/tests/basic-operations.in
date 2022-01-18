@@ -1,0 +1,35 @@
+I tests/definitions.inc
+
+> init
+<<<
+
++ img.png img.png
++ akari.c akari.c
++ text1.txt text1.txt
+
+> add img.png
+<<<
+
+> add akari.c
+<<<
+
+> commit c1
+<<<
+
+> add text1.txt
+<<<
+
+> commit c2
+<<<
+
+- akari.c
+
+> checkout -- akari.c
+<<<
+
+= akari.c akari.c
+
+> rm text1.txt
+<<<
+
+* text1.txt
