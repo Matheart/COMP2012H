@@ -26,7 +26,6 @@ void list_push_back(List *list, Blob *blob) {
 
 Blob *list_find_name(const List *list, const string &name) {
     Blob *head = list->head; 
-    if(head->name == name) return head;
 
     for(Blob *blob = head->next; blob != head; blob = blob->next){
         if(blob->name == name)
@@ -42,15 +41,13 @@ Blob *list_put(List *list, const string &name, const string &ref) {
         new_node->name = name;
         new_node->ref = ref;
 
-        if(name < list->head->name){
+        if(name < list->head->next->name){
             // insert new_node to the front of the linked list
-            Blob *last_node = list->head->prev;
-            last_node->next = new_node;
-            new_node->next = list->head;
-            new_node->prev = last_node;
-            list->head->prev = new_node;
-            list->head = new_node;
-        } else if(name > list->head->prev->name){
+            new_node->next = list->head->next;
+            new_node->prev = list->head;
+            list->head->next->prev = new_node;
+            list->head->next = new_node;
+        } else if(name >= list->head->prev->name){
             // insert new_node to the back of the linked list
             list_push_back(list, new_node);
         } else{
@@ -80,15 +77,14 @@ Blob *list_put(List *list, const string &name, Commit *commit) {
         new_node->name = name;
         new_node->commit = commit;
 
-        if(name < list->head->name){
+        if(name < list->head->next->name){
             // insert new_node to the front of the linked list
-            Blob *last_node = list->head->prev;
-            last_node->next = new_node;
-            new_node->next = list->head;
-            new_node->prev = last_node;
-            list->head->prev = new_node;
-            list->head = new_node;
-        } else if(name > list->head->prev->name){
+            new_node->next = list->head->next;
+            new_node->prev = list->head;
+            list->head->next->prev = new_node;
+            list->head->next = new_node;
+
+        } else if(name >= list->head->prev->name){
             // insert new_node to the back of the linked list
             list_push_back(list, new_node);
         }  else{
@@ -114,14 +110,7 @@ Blob *list_put(List *list, const string &name, Commit *commit) {
 bool list_remove(List *list, const string &target) {
     Blob *find_blob = list_find_name(list, target);
     if(find_blob == nullptr) return false;
-    if(find_blob == find_blob->next){ // only one node left
-        delete find_blob;
-        list->head = nullptr;
-        return true;
-    }
 
-    // update head
-    if(find_blob == list->head) list->head = find_blob->next;
     // we need to delete find_blob
     find_blob->prev->next = find_blob->next;
     find_blob->next->prev = find_blob->prev;
@@ -130,10 +119,9 @@ bool list_remove(List *list, const string &target) {
 }
 
 int list_size(const List *list) {
-    if(list->head == nullptr) return 0;
-    if(list->head == list->head->next) return 1;
+    if(list->head == list->head->next) return 0;
 
-    int lngth = 1;
+    int lngth = 0;
     Blob *blob = list->head->next;
     while(blob != list->head){
         ++ lngth;
@@ -178,8 +166,8 @@ Commit *get_lca(Commit *c1, Commit *c2) {
 
 /*  ------------ For testing ---------- */
 void forward_transverse(List *list){
-    cout << "Array size:" << list_size(list) << endl;
     cout << "Forward:" << endl;
+    cout << "Array size:" << list_size(list) << endl;
     cout << list->head->name << " " << list->head->ref << endl;
     for(Blob *blob = list->head->next; blob != list->head; blob = blob->next){
         cout << blob->name << " " << blob->ref << endl;
@@ -189,6 +177,7 @@ void forward_transverse(List *list){
 
 void backward_transverse(List *list){
     cout << "Backward:" << endl;
+    cout << "Array size:" << list_size(list) << endl;
     for(Blob *blob = list->head->prev; blob != list->head; blob = blob->prev){
         cout << blob->name << " " << blob->ref << endl;
     }
@@ -200,8 +189,6 @@ void backward_transverse(List *list){
 int main(){
     /* Task 1: ListNew */
     List *list = list_new();
-    list->head->name = "#1 node";
-    cout << list->head->name << endl;
 
     /* Task 2: ListPushBackOne */
     Blob *blob = new Blob;
@@ -230,28 +217,24 @@ int main(){
     cout << name_blob_four->next->name << endl;
     Blob *name_blob_seven = list_find_name(list, "#7 node");
     cout << name_blob_seven->next->name << endl; 
-    Blob *name_blob_one = list_find_name(list, "#1 node");
+    Blob *name_blob_one = list_find_name(list, "#3 node");
     cout << name_blob_one->prev->name << endl;
     Blob *name_blob_eight = list_find_name(list, "#8 node");
     if(name_blob_eight == nullptr){
         cout << "nullptr" << endl;
     } else{
         cout << name_blob_eight->prev->name << endl; 
-    }        
-    
+    }     
+
     /* Task 6, 7, 8: ListPutNew */
     cout << "==============" << endl;
     cout << "Task 6, 7, 8" << endl;
     Blob *task6_node = list_put(list, "#5 node", "Reference");
-    //cout << task6_node->prev->name << " " << task6_node->next->name << endl;
     Blob *task6_node_two = list_put(list, "#62 node", "Reference2");
-
-    //cout << task6_node->prev->name << " " << task6_node->next->name << endl;
-    cout << "Commit 1" << endl;
     Commit *task6_commit = new Commit; task6_commit->message = "First Commit";
-    cout << "Commit 2" << endl;
     Blob *task6_node_three = list_put(list, "#0 node", task6_commit);
-    cout << task6_node_three->commit->message << endl;
+    cout << task6_node_three->commit->message << " " << task6_node_three->next->name << endl;
+
     Blob *task6_node_four = list_put(list, "#8 node", "Reference3");
     Blob *task6_node_five = list_put(list, "#63 node", "Reference4");
     
@@ -276,7 +259,5 @@ int main(){
         blob = blob->next;
     }
     list_remove(list, "#8 node");
-    cout << (list->head == nullptr) << endl;  
-
-    /* Task 15: ListSize */  
+    cout << (list->head->next == list->head) << endl;   
 }
