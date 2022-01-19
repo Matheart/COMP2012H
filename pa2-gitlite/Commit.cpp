@@ -131,11 +131,17 @@ int list_size(const List *list) {
 }
 
 void list_clear(List *list) {
-
+    Blob *last_node = list->head->prev;
+    Blob *blob = last_node;
+    while(blob != list->head){
+        blob = blob->prev;
+        list_remove(list, blob->next->name);
+    }
 }
 
 void list_delete(List *list) {
-
+    list_clear(list);
+    delete list->head;
 }
 
 void list_replace(List *list, const List *another) {
@@ -259,5 +265,19 @@ int main(){
         blob = blob->next;
     }
     list_remove(list, "#8 node");
-    cout << (list->head->next == list->head) << endl;   
+    cout << (list->head->next == list->head) << endl; 
+
+    cout << "==============" << endl;
+    cout << "Task 16, 17" << endl;
+    /* Task 16: ListClearEmpty */  
+    list_clear(list);
+    cout << (list->head->next == list->head) << endl;
+    cout << list_size(list) << endl;
+
+    /* Task 17: ListClearNonEmpty */
+    list_put(list, "#2 node", "A");
+    list_put(list, "#1 node", "R");
+    cout << list_size(list) << endl;
+    list_clear(list);
+    cout << list_size(list) << endl;
 }
